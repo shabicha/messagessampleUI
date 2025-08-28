@@ -15,6 +15,37 @@ class ViewController: UIViewController {
     private var billTitle = UITextField()
     private var amount = UILabel()
     private var splitBy = UILabel()
+    
+    private var numField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "0.00"
+        tf.keyboardType = .numberPad
+        
+        tf.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+          tf.layer.cornerRadius = 7.82
+          tf.borderStyle = .none
+          tf.font = UIFont.systemFont(ofSize: 16)
+          tf.textColor = UIColor.black
+          tf.textAlignment = .left
+        
+          
+        // Create a container view for the $ sign
+          let leftContainer = UIView(frame: CGRect(x: 0, y: 0, width: 35, height: 20))
+          let dollarLabel = UILabel(frame: CGRect(x: 12, y: 0, width: 20, height: 20))
+          dollarLabel.text = "$"
+          dollarLabel.font = UIFont.systemFont(ofSize: 16)
+          dollarLabel.textColor = UIColor(red: 0.518, green: 0.557, blue: 0.6, alpha: 1)
+          dollarLabel.textAlignment = .center
+          
+          leftContainer.addSubview(dollarLabel)
+          tf.leftView = leftContainer
+          tf.leftViewMode = .always
+           
+           // Optional: Add right padding too
+           tf.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 55, height: 20))
+           tf.rightViewMode = .always
+        return tf
+    } ()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,6 +114,17 @@ class ViewController: UIViewController {
         splitBy.translatesAutoresizingMaskIntoConstraints = false
         splitBy.topAnchor.constraint(equalTo: billTitle.bottomAnchor, constant: 30).isActive = true // 16pt gap
         splitBy.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 240).isActive = true
+        //text field
+        view.addSubview(numField)
+        numField.translatesAutoresizingMaskIntoConstraints = false
+        numField.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        numField.topAnchor.constraint(equalTo: amount.bottomAnchor, constant: 8).isActive = true
+        numField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
+
+        
+        
+        
+        
         
         
 
