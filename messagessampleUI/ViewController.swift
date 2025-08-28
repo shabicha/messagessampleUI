@@ -13,7 +13,8 @@ class ViewController: UIViewController {
     private var logoView = UIImageView()
     private var appName = UILabel()
     private var billTitle = UITextField()
-    private var subtitle = UILabel()
+    private var amount = UILabel()
+    private var splitBy = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,15 +63,27 @@ class ViewController: UIViewController {
         billTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
         
         //subtext
-        subtitle.text = "AMOUNT"
-        subtitle.frame = CGRect(x: 0, y: 0, width: 63.52, height: 16)
-        subtitle.textColor = UIColor(red: 0.557, green: 0.557, blue: 0.576, alpha: 1)
-        subtitle.font = UIFont.systemFont(ofSize: 12.7, weight: .regular)
+        amount.text = "AMOUNT"
+        amount.frame = CGRect(x: 0, y: 0, width: 63.52, height: 16)
+        amount.textColor = UIColor(red: 0.557, green: 0.557, blue: 0.576, alpha: 1)
+        amount.font = UIFont.systemFont(ofSize: 12.7, weight: .regular)
         
-        view.addSubview(subtitle)
-        subtitle.translatesAutoresizingMaskIntoConstraints = false
-        subtitle.topAnchor.constraint(equalTo: billTitle.bottomAnchor, constant: 30).isActive = true // 16pt gap
-        subtitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
+        view.addSubview(amount)
+        amount.translatesAutoresizingMaskIntoConstraints = false
+        amount.topAnchor.constraint(equalTo: billTitle.bottomAnchor, constant: 30).isActive = true // 16pt gap
+        amount.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
+        
+        //splitby
+        splitBy.text = "SPLIT BY"
+        splitBy.frame = CGRect(x: 0, y: 0, width: 63.52, height: 16)
+        splitBy.textColor = UIColor(red: 0.557, green: 0.557, blue: 0.576, alpha: 1)
+        splitBy.font = UIFont.systemFont(ofSize: 12.7, weight: .regular)
+        
+        view.addSubview(splitBy)
+        splitBy.translatesAutoresizingMaskIntoConstraints = false
+        splitBy.topAnchor.constraint(equalTo: billTitle.bottomAnchor, constant: 30).isActive = true // 16pt gap
+        splitBy.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 240).isActive = true
+        
         
 
     }
