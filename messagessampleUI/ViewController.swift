@@ -16,7 +16,8 @@ class ViewController: UIViewController {
     private var amount = UILabel()
     private var splitBy = UILabel()
     private var percent = UIButton()
-    
+    private var dollarSelect = UIButton()
+
     private var numField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "0.00"
@@ -47,17 +48,39 @@ class ViewController: UIViewController {
         return tf
     } ()
     
-    private var isSelected = false
+    private var isPercentSelected = false
+    private var isDollarSelected = false
+
     @objc func toggleButton() {
-            isSelected.toggle()
+      
+        if isPercentSelected {
+            isPercentSelected = false
+            percent.layer.borderWidth = 0
+        } else {
             
-            if isSelected {
-                percent.layer.borderWidth = 3.0
-                percent.layer.borderColor = UIColor.black.cgColor
-            } else {
-                percent.layer.borderWidth = 0
-            }
+            isPercentSelected = true
+            isDollarSelected = false
+            
+            percent.layer.borderWidth = 3.0
+            percent.layer.borderColor = UIColor.black.cgColor
+            dollarSelect.layer.borderWidth = 0
         }
+    }
+
+    @objc func toggleButton2() {
+        if isDollarSelected {
+            isDollarSelected = false
+            dollarSelect.layer.borderWidth = 0
+        } else {
+            isDollarSelected = true
+            isPercentSelected = false
+            
+            dollarSelect.layer.borderWidth = 3.0
+            dollarSelect.layer.borderColor = UIColor.black.cgColor
+            percent.layer.borderWidth = 0
+        }
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -150,6 +173,24 @@ class ViewController: UIViewController {
         percent.heightAnchor.constraint(equalToConstant: 35).isActive = true
         percent.topAnchor.constraint(equalTo: splitBy.bottomAnchor, constant: 8).isActive = true
         percent.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 240).isActive = true
+        
+        //dollar
+        dollarSelect.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+        dollarSelect.layer.cornerRadius = 5.86
+        dollarSelect.setTitle("$", for: .normal)
+        dollarSelect.setTitleColor(UIColor(red: 0.557, green: 0.557, blue: 0.576, alpha: 1), for: .normal)
+        dollarSelect.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+
+        // pressed state
+        dollarSelect.addTarget(self, action: #selector(toggleButton2), for: .touchUpInside)
+
+        view.addSubview(dollarSelect)
+        dollarSelect.translatesAutoresizingMaskIntoConstraints = false
+        dollarSelect.widthAnchor.constraint(equalToConstant: 44.95).isActive = true
+
+        dollarSelect.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        dollarSelect.topAnchor.constraint(equalTo: splitBy.bottomAnchor, constant: 8).isActive = true
+        dollarSelect.leadingAnchor.constraint(equalTo: percent.leadingAnchor, constant: 60).isActive = true
        
         
         
