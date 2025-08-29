@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     private var splitBy = UILabel()
     private var percent = UIButton()
     private var dollarSelect = UIButton()
+    private var send = UIButton()
 
     private var numField: UITextField = {
         let tf = UITextField()
@@ -163,7 +164,7 @@ class ViewController: UIViewController {
         percent.setTitleColor(UIColor(red: 0.557, green: 0.557, blue: 0.576, alpha: 1), for: .normal)
         percent.titleLabel?.font = UIFont.systemFont(ofSize: 16)
 
-        // pressed state
+            // pressed state
         percent.addTarget(self, action: #selector(toggleButton), for: .touchUpInside)
 
         view.addSubview(percent)
@@ -181,7 +182,7 @@ class ViewController: UIViewController {
         dollarSelect.setTitleColor(UIColor(red: 0.557, green: 0.557, blue: 0.576, alpha: 1), for: .normal)
         dollarSelect.titleLabel?.font = UIFont.systemFont(ofSize: 16)
 
-        // pressed state
+            // pressed state
         dollarSelect.addTarget(self, action: #selector(toggleButton2), for: .touchUpInside)
 
         view.addSubview(dollarSelect)
@@ -191,8 +192,39 @@ class ViewController: UIViewController {
         dollarSelect.heightAnchor.constraint(equalToConstant: 35).isActive = true
         dollarSelect.topAnchor.constraint(equalTo: splitBy.bottomAnchor, constant: 8).isActive = true
         dollarSelect.leadingAnchor.constraint(equalTo: percent.leadingAnchor, constant: 60).isActive = true
-       
         
+        
+        // send button
+       
+        send.frame = CGRect(x: 0, y: 0, width: 334.22, height: 51.79)
+        send.layer.backgroundColor = UIColor(red: 0, green: 0.533, blue: 1, alpha: 1).cgColor
+        send.layer.cornerRadius = 9.2
+        send.setTitle("Send Split", for: .normal)
+        send.setTitleColor(UIColor.white, for: .normal)
+        send.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        view.addSubview(send)
+        send.translatesAutoresizingMaskIntoConstraints = false
+        
+        var config = UIButton.Configuration.filled()
+        config.title = "Send Split"
+        config.image = UIImage(systemName: "arrow.up",   withConfiguration: UIImage.SymbolConfiguration(pointSize: 12, weight: .medium))
+        config.imagePlacement = .leading  // on left
+        config.imagePadding = 12  // text and arrow spacing
+        config.baseBackgroundColor = UIColor(red: 0, green: 0.533, blue: 1, alpha: 1)
+        config.baseForegroundColor = UIColor.white
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.systemFont(ofSize: 16)
+            return outgoing
+        }
+
+        send.configuration = config
+        
+        send.widthAnchor.constraint(equalToConstant: 334.22).isActive = true
+
+        send.heightAnchor.constraint(equalToConstant: 51.79).isActive = true
+        send.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        send.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
         
         
         
