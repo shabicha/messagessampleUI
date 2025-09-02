@@ -247,16 +247,17 @@ class ViewController: UIViewController {
         
         addChild(peopleVC) // 1️⃣ tell UIKit this is a child
         view.addSubview(peopleVC.view) // 2️⃣ add its view
+        peopleVC.didMove(toParent: self) // 3️⃣ finish embedding
         
         peopleVC.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            peopleVC.view.topAnchor.constraint(equalTo: people.bottomAnchor),
+            peopleVC.view.topAnchor.constraint(equalTo: people.bottomAnchor, constant: 8),
             peopleVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             peopleVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             peopleVC.view.bottomAnchor.constraint(equalTo: send.topAnchor)
         ])
+      
         
-        peopleVC.didMove(toParent: self) // 3️⃣ finish embedding
     }
     private func setupBackgroundView() {
            backgroundView = UIView()

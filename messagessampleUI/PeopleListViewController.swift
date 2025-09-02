@@ -151,8 +151,9 @@ class AddPeopleTableViewCell: UITableViewCell {
 class PeopleListViewController: UIViewController {
     
     // 👇 Use insetGrouped for rounded style + padding
-    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 10, height: 100), style: .insetGrouped)
     
+
     private var people: [Person] = [
         Person(name: "Shabicha", percentage: 70),
         Person(name: "Shabicha", percentage: 20),
@@ -213,11 +214,27 @@ class PeopleListViewController: UIViewController {
     private func updatePersonPercentage(at index: Int, percentage: Int) {
         people[index].percentage = percentage
     }
+  
+ 
 }
 
 // MARK: - Table View Data Source & Delegate
 extension PeopleListViewController: UITableViewDataSource, UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.leastNonzeroMagnitude
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.leastNonzeroMagnitude
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return people.count + 1 // +1 for the "Add People" cell
     }
