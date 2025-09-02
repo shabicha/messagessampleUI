@@ -1,0 +1,268 @@
+//
+//  PeopleListViewController.swift
+//  messagessampleUI
+//
+//  Created by Shabicha Sureshkumar on 2025-09-01.
+//
+
+import UIKit
+
+// MARK: - Person Model
+struct Person {
+    var name: String
+    var percentage: Int
+}
+
+// MARK: - Person Cell
+class PersonTableViewCell: UITableViewCell {
+    static let identifier = "PersonTableViewCell"
+    
+    private let nameLabel = UILabel()
+    private let percentageTextField = UITextField()
+    private let removeButton = UIButton()
+    
+    var onPercentageChanged: ((Int) -> Void)?
+    var onRemovePressed: (() -> Void)?
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        selectionStyle = .none
+        
+        // Name label
+        nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        nameLabel.textColor = .label
+        
+        // Percentage text field
+        percentageTextField.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        percentageTextField.textColor = .systemBlue
+        percentageTextField.textAlignment = .center
+        percentageTextField.keyboardType = .numberPad
+        percentageTextField.borderStyle = .roundedRect
+        percentageTextField.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.1)
+        percentageTextField.layer.borderColor = UIColor.systemBlue.cgColor
+        percentageTextField.layer.borderWidth = 1
+        percentageTextField.layer.cornerRadius = 8
+        percentageTextField.addTarget(self, action: #selector(percentageChanged), for: .editingChanged)
+        
+        // Remove button
+        removeButton.setTitle("−", for: .normal)
+        removeButton.setTitleColor(.white, for: .normal)
+        removeButton.backgroundColor = .systemRed
+        removeButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        removeButton.layer.cornerRadius = 15
+        removeButton.addTarget(self, action: #selector(removePressed), for: .touchUpInside)
+        
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(percentageTextField)
+        contentView.addSubview(removeButton)
+        
+        // Auto Layout
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        percentageTextField.translatesAutoresizingMaskIntoConstraints = false
+        removeButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: percentageTextField.leadingAnchor, constant: -16),
+            
+            percentageTextField.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            percentageTextField.widthAnchor.constraint(equalToConstant: 80),
+            percentageTextField.heightAnchor.constraint(equalToConstant: 36),
+            
+            removeButton.leadingAnchor.constraint(equalTo: percentageTextField.trailingAnchor, constant: 16),
+            removeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            removeButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            removeButton.widthAnchor.constraint(equalToConstant: 30),
+            removeButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    func configure(with person: Person) {
+        nameLabel.text = person.name
+        percentageTextField.text = "\(person.percentage)%"
+    }
+    
+    @objc private func percentageChanged() {
+        guard let text = percentageTextField.text,
+              let percentageString = text.replacingOccurrences(of: "%", with: "").trimmingCharacters(in: .whitespaces).isEmpty ? nil : text.replacingOccurrences(of: "%", with: ""),
+              let percentage = Int(percentageString),
+              percentage >= 0, percentage <= 100 else {
+            return
+        }
+        onPercentageChanged?(percentage)
+    }
+    
+    @objc private func removePressed() {
+        onRemovePressed?()
+    }
+}
+
+// MARK: - Add People Cell
+class AddPeopleTableViewCell: UITableViewCell {
+    static let identifier = "AddPeopleTableViewCell"
+    
+    private let addButton = UIButton()
+    var onAddPressed: (() -> Void)?
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        selectionStyle = .none
+        
+        addButton.setTitle("+ Add People", for: .normal)
+        addButton.setTitleColor(.systemBlue, for: .normal)
+        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        addButton.contentHorizontalAlignment = .left
+        addButton.addTarget(self, action: #selector(addPressed), for: .touchUpInside)
+        
+        contentView.addSubview(addButton)
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            addButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            addButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            addButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            addButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
+        ])
+    }
+    
+    @objc private func addPressed() {
+        onAddPressed?()
+    }
+}
+
+// MARK: - Main View Controller
+class PeopleListViewController: UIViewController {
+    
+    // 👇 Use insetGrouped for rounded style + padding
+    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    
+    private var people: [Person] = [
+        Person(name: "Shabicha", percentage: 70),
+        Person(name: "Shabicha", percentage: 20),
+        Person(name: "Shabicha", percentage: 53)
+    ]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        setupTableView()
+    }
+    
+    private func setupUI() {
+        view.backgroundColor = .systemGroupedBackground
+        title = "PEOPLE"
+        
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
+        
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.backgroundColor = .systemGroupedBackground
+        tableView.separatorStyle = .singleLine
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.rowHeight = 60
+        
+        tableView.register(PersonTableViewCell.self, forCellReuseIdentifier: PersonTableViewCell.identifier)
+        tableView.register(AddPeopleTableViewCell.self, forCellReuseIdentifier: AddPeopleTableViewCell.identifier)
+    }
+    
+    private func addNewPerson() {
+        let newPerson = Person(name: "New Person", percentage: 0)
+        people.append(newPerson)
+        
+        let indexPath = IndexPath(row: people.count - 1, section: 0)
+        tableView.insertRows(at: [indexPath], with: .automatic)
+    }
+    
+    private func removePerson(at index: Int) {
+        people.remove(at: index)
+        let indexPath = IndexPath(row: index, section: 0)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+    
+    private func updatePersonPercentage(at index: Int, percentage: Int) {
+        people[index].percentage = percentage
+    }
+}
+
+// MARK: - Table View Data Source & Delegate
+extension PeopleListViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return people.count + 1 // +1 for the "Add People" cell
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row < people.count {
+            let cell = tableView.dequeueReusableCell(withIdentifier: PersonTableViewCell.identifier, for: indexPath) as! PersonTableViewCell
+            let person = people[indexPath.row]
+            cell.configure(with: person)
+            
+            // Capture cell dynamically instead of using stale indexPath
+            cell.onPercentageChanged = { [weak self, weak tableView, weak cell] percentage in
+                guard let self = self, let cell = cell, let currentIndexPath = tableView?.indexPath(for: cell) else { return }
+                self.updatePersonPercentage(at: currentIndexPath.row, percentage: percentage)
+            }
+            
+            cell.onRemovePressed = { [weak self, weak tableView, weak cell] in
+                guard let self = self, let cell = cell, let currentIndexPath = tableView?.indexPath(for: cell) else { return }
+                
+                // Prevent removing the last person
+                guard self.people.count > 1 else { return }
+                
+                self.removePerson(at: currentIndexPath.row)
+            }
+            
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: AddPeopleTableViewCell.identifier, for: indexPath) as! AddPeopleTableViewCell
+            
+            cell.onAddPressed = { [weak self] in
+                self?.addNewPerson()
+            }
+            
+            return cell
+        }
+    }
+
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+}
+
+
+#Preview {
+PeopleListViewController()
+}
+

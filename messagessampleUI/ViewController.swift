@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     private var billTitle = UITextField()
     private var amount = UILabel()
     private var splitBy = UILabel()
+    private var people = UILabel()
+
     private var percent = UIButton()
     private var dollarSelect = UIButton()
     private var send = UIButton()
@@ -226,9 +228,35 @@ class ViewController: UIViewController {
         send.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         send.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
         
+        people.text = "PEOPLE"
+        people.textColor = UIColor(red: 0.557, green: 0.557, blue: 0.576, alpha: 1)
+        people.font = UIFont.systemFont(ofSize: 12.7, weight: .regular)
         
-        
+        view.addSubview(people)
+        people.translatesAutoresizingMaskIntoConstraints = false
+        people.topAnchor.constraint(equalTo: numField.bottomAnchor, constant: 32).isActive = true
+        people.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
 
+        //PeopleListViewController
+        embedPeopleList()
+
+
+    }
+    private func embedPeopleList() {
+        let peopleVC = PeopleListViewController()
+        
+        addChild(peopleVC) // 1️⃣ tell UIKit this is a child
+        view.addSubview(peopleVC.view) // 2️⃣ add its view
+        
+        peopleVC.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            peopleVC.view.topAnchor.constraint(equalTo: people.bottomAnchor),
+            peopleVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            peopleVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            peopleVC.view.bottomAnchor.constraint(equalTo: send.topAnchor)
+        ])
+        
+        peopleVC.didMove(toParent: self) // 3️⃣ finish embedding
     }
     private func setupBackgroundView() {
            backgroundView = UIView()
