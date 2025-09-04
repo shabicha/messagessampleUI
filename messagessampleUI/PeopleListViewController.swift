@@ -6,7 +6,6 @@
 //
 
 import UIKit
-
 // cell model
 struct Person {
     var name: String
@@ -20,6 +19,8 @@ class PersonTableViewCell: UITableViewCell {
     private let nameTextField = UITextField()
     private let percentageTextField = UITextField()
     private let removeButton = UIButton()
+    private let containerView = UIView()
+
     
     var onPercentageChanged: ((Int) -> Void)?
     var onRemovePressed: (() -> Void)?
@@ -27,6 +28,8 @@ class PersonTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        
         setupUI()
     }
     
@@ -37,8 +40,10 @@ class PersonTableViewCell: UITableViewCell {
     private func setupUI() {
         selectionStyle = .none
         
+       
+
         // Name label
-        nameTextField.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        nameTextField.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         nameTextField.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         nameTextField.keyboardType = .default
         nameTextField.addTarget(self, action: #selector(nameChanged), for: .editingChanged)
@@ -53,7 +58,7 @@ class PersonTableViewCell: UITableViewCell {
         percentageTextField.backgroundColor = UIColor(red: 0.948, green: 0.948, blue: 0.948, alpha: 1)
         percentageTextField.layer.borderColor = UIColor.systemBlue.cgColor
         percentageTextField.layer.borderWidth = 1
-        percentageTextField.layer.cornerRadius = 8
+        percentageTextField.layer.cornerRadius = 5.86
         percentageTextField.addTarget(self, action: #selector(percentageChanged), for: .editingChanged)
         
         // Remove button
@@ -75,7 +80,7 @@ class PersonTableViewCell: UITableViewCell {
                 removeButton.translatesAutoresizingMaskIntoConstraints = false
                 
                 NSLayoutConstraint.activate([
-                    nameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                    nameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 28),
                     nameTextField.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
                     nameTextField.trailingAnchor.constraint(lessThanOrEqualTo: percentageTextField.leadingAnchor, constant: -16),
                     
@@ -164,10 +169,11 @@ class PeopleListViewController: UIViewController {
     
     // insetGrouped == rounded style + padding
     let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 10, height: 100), style: .insetGrouped)
-    
+    let containerView = UIView()
+
 
     private var people: [Person] = [
-        Person(name: "Shabicha", percentage: 70),
+        Person(name: "Shabicha", percentage: 100),
         Person(name: "Shabicha", percentage: 20),
         Person(name: "Shabicha", percentage: 53)
     ]
@@ -178,19 +184,23 @@ class PeopleListViewController: UIViewController {
         setupTableView()
     }
     private func setupUI() {
+        
             view.backgroundColor = .systemGroupedBackground
-            
+        
             navigationController?.navigationBar.prefersLargeTitles = false
             navigationItem.largeTitleDisplayMode = .never
             
+        
             view.addSubview(tableView)
+        
             tableView.translatesAutoresizingMaskIntoConstraints = false
-            
+        
+        
             NSLayoutConstraint.activate([
-                tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+                       tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                       tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                       tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32)
             ])
         }
     private func setupTableView() {
@@ -200,7 +210,7 @@ class PeopleListViewController: UIViewController {
             tableView.backgroundColor = .systemGroupedBackground
             tableView.separatorStyle = .singleLine
             tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-            tableView.rowHeight = 60
+            tableView.rowHeight = 200
             
             tableView.register(PersonTableViewCell.self, forCellReuseIdentifier: PersonTableViewCell.identifier)
             tableView.register(AddPeopleTableViewCell.self, forCellReuseIdentifier: AddPeopleTableViewCell.identifier)

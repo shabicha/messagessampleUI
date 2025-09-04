@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         tf.keyboardType = .numberPad
         
         tf.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-          tf.layer.cornerRadius = 7.82
+        tf.layer.cornerRadius = 5.5
           tf.borderStyle = .none
           tf.font = UIFont.systemFont(ofSize: 16)
           tf.textColor = UIColor.black
@@ -151,7 +151,7 @@ class ViewController: UIViewController {
         view.addSubview(splitBy)
         splitBy.translatesAutoresizingMaskIntoConstraints = false
         splitBy.topAnchor.constraint(equalTo: billTitle.bottomAnchor, constant: 30).isActive = true
-        splitBy.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 240).isActive = true
+        splitBy.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 255).isActive = true
         //text field
         view.addSubview(numField)
         numField.translatesAutoresizingMaskIntoConstraints = false
@@ -161,7 +161,7 @@ class ViewController: UIViewController {
         
         //percent
         percent.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-        percent.layer.cornerRadius = 5.86
+        percent.layer.cornerRadius = 5
         percent.setTitle("%", for: .normal)
         percent.setTitleColor(UIColor(red: 0.557, green: 0.557, blue: 0.576, alpha: 1), for: .normal)
         percent.titleLabel?.font = UIFont.systemFont(ofSize: 16)
@@ -175,11 +175,11 @@ class ViewController: UIViewController {
 
         percent.heightAnchor.constraint(equalToConstant: 35).isActive = true
         percent.topAnchor.constraint(equalTo: splitBy.bottomAnchor, constant: 8).isActive = true
-        percent.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 240).isActive = true
+        percent.leadingAnchor.constraint(equalTo: numField.leadingAnchor, constant: 225).isActive = true
         
         //dollar
         dollarSelect.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-        dollarSelect.layer.cornerRadius = 5.86
+        dollarSelect.layer.cornerRadius = 5
         dollarSelect.setTitle("$", for: .normal)
         dollarSelect.setTitleColor(UIColor(red: 0.557, green: 0.557, blue: 0.576, alpha: 1), for: .normal)
         dollarSelect.titleLabel?.font = UIFont.systemFont(ofSize: 16)
@@ -200,7 +200,7 @@ class ViewController: UIViewController {
        
         send.frame = CGRect(x: 0, y: 0, width: 334.22, height: 51.79)
         send.layer.backgroundColor = UIColor(red: 0, green: 0.533, blue: 1, alpha: 1).cgColor
-        send.layer.cornerRadius = 9.2
+        send.layer.cornerRadius = 20
         send.setTitle("Send Split", for: .normal)
         send.setTitleColor(UIColor.white, for: .normal)
         send.titleLabel?.font = UIFont.systemFont(ofSize: 16)
