@@ -20,6 +20,7 @@ class PersonTableViewCell: UITableViewCell {
     private let percentageTextField = UITextField()
     private let removeButton = UIButton()
     private let containerView = UIView()
+    private let percentLabel = UILabel()
 
     
     var onPercentageChanged: ((Int) -> Void)?
@@ -56,11 +57,20 @@ class PersonTableViewCell: UITableViewCell {
         percentageTextField.keyboardType = .numberPad
         percentageTextField.borderStyle = .roundedRect
         percentageTextField.backgroundColor = UIColor(red: 0.948, green: 0.948, blue: 0.948, alpha: 1)
+        percentageTextField.placeholder = "0"
         percentageTextField.layer.borderColor = UIColor.systemBlue.cgColor
         percentageTextField.layer.borderWidth = 1
         percentageTextField.layer.cornerRadius = 5.86
         percentageTextField.addTarget(self, action: #selector(percentageChanged), for: .editingChanged)
         
+        percentLabel.text = "%   "
+        percentLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+            percentLabel.textColor = .systemBlue
+            percentLabel.sizeToFit()
+        
+        percentageTextField.rightView = percentLabel
+        
+        percentageTextField.rightViewMode = .always
         // Remove button
         removeButton.setImage(UIImage(systemName: "minus.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)), for: .normal)
         removeButton.tintColor = .systemRed
@@ -95,13 +105,12 @@ class PersonTableViewCell: UITableViewCell {
     
     func configure(with person: Person) {
         nameTextField.text = person.name
-            percentageTextField.text = "\(person.percentage)%"
+            percentageTextField.text = (person.percentage) == 0 ? "" : "\(person.percentage)"
         }
         
         @objc private func percentageChanged() {
             guard let text = percentageTextField.text,
-                  let percentageString = text.replacingOccurrences(of: "%", with: "").trimmingCharacters(in: .whitespaces).isEmpty ? nil : text.replacingOccurrences(of: "%", with: ""),
-                  let percentage = Int(percentageString),
+                  let percentage = Int(text),
                   percentage >= 0, percentage <= 100 else {
                 return
             }
