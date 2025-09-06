@@ -62,11 +62,8 @@ class PersonTableViewCell: UITableViewCell {
         percentageTextField.addTarget(self, action: #selector(percentageChanged), for: .editingChanged)
         
         // Remove button
-        removeButton.setTitle("−", for: .normal)
-        removeButton.setTitleColor(.white, for: .normal)
-        removeButton.backgroundColor = .systemRed
-        removeButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        removeButton.layer.cornerRadius = 15
+        removeButton.setImage(UIImage(systemName: "minus.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)), for: .normal)
+        removeButton.tintColor = .systemRed
         removeButton.addTarget(self, action: #selector(removePressed), for: .touchUpInside)
         
         //constraints
@@ -124,7 +121,6 @@ class AddPeopleTableViewCell: UITableViewCell {
     static let identifier = "AddPeopleTableViewCell"
     
     private let addButton = UIButton()
-    private let plusImage = UIImage(systemName: "plus.circle")
     var onAddPressed: (() -> Void)?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
