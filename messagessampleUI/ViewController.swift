@@ -51,8 +51,8 @@ class ViewController: UIViewController {
         return tf
     } ()
     
-    private var isPercentSelected = false
-    private var isDollarSelected = false
+    var isPercentSelected = false
+    var isDollarSelected = false
 
     @objc func toggleButton() {
       
