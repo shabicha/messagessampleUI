@@ -8,6 +8,16 @@
 import UIKit
 
 class ViewController: UIViewController {
+    @objc func amountChanged() {
+        guard let text = numField.text,
+              let amount = Double(text),
+              amount > 0 else {
+            peopleListVC?.updateTotalAmount(0.0)
+            return
+        }
+        
+        peopleListVC?.updateTotalAmount(amount)
+    }
     // MARK: - UI Properties
         private var backgroundView: UIView!
     private var logoView = UIImageView()
@@ -164,7 +174,8 @@ class ViewController: UIViewController {
         numField.heightAnchor.constraint(equalToConstant: 35).isActive = true
         numField.topAnchor.constraint(equalTo: amount.bottomAnchor, constant: 8).isActive = true
         numField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
-        
+        numField.addTarget(self, action: #selector(amountChanged), for: .editingChanged)
+
         //percent
         percent.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
         percent.layer.cornerRadius = 5
@@ -265,6 +276,7 @@ class ViewController: UIViewController {
       
         
     }
+    
     private func setupBackgroundView() {
            backgroundView = UIView()
            backgroundView.layer.backgroundColor = UIColor(red: 0.463, green: 0.463, blue: 0.502, alpha: 0.12).cgColor

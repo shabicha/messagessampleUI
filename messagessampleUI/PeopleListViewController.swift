@@ -21,6 +21,7 @@ class PersonTableViewCell: UITableViewCell {
     private let removeButton = UIButton()
     private let containerView = UIView()
     private let percentLabel = UILabel()
+    private var totalAmount: Double = 0.0
 
     private let dollarLabel = UILabel()
 
@@ -104,7 +105,10 @@ class PersonTableViewCell: UITableViewCell {
                 ])
             }
     
-    func configure(with person: Person) {
+    
+    func configure(with person: Person,  totalAmount: Double) {
+        self.totalAmount = totalAmount
+
         nameTextField.text = person.name
             percentageTextField.text = (person.percentage) == 0 ? "" : "\(person.percentage)"
         }
@@ -117,6 +121,14 @@ class PersonTableViewCell: UITableViewCell {
             percentageTextField.leftViewMode = .always
             percentageTextField.rightView = nil
             percentageTextField.rightViewMode = .never
+        
+        if let currentText = percentageTextField.text,
+              let percentage = Int(currentText),
+              percentage > 0,
+              totalAmount > 0 {
+               let dollarAmount = (Double(percentage) / 100.0) * totalAmount
+               percentageTextField.text = String(format: "%.2f", dollarAmount)
+           }
        }
        
        func switchToPercentMode() {
@@ -128,6 +140,14 @@ class PersonTableViewCell: UITableViewCell {
                percentageTextField.rightViewMode = .always
                percentageTextField.leftView = nil
                percentageTextField.leftViewMode = .never
+           
+           if let currentText = percentageTextField.text,
+                  let dollarAmount = Double(currentText),
+                  dollarAmount > 0,
+                  totalAmount > 0 {
+                   let percentage = Int((dollarAmount / totalAmount) * 100)
+                   percentageTextField.text = "\(percentage)"
+               }
            
        }
     
@@ -198,7 +218,7 @@ class PeopleListViewController: UIViewController {
     // insetGrouped == rounded style + padding
     let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 10, height: 100), style: .insetGrouped)
     let containerView = UIView()
-
+    private var totalAmount: Double = 0.0   
     private var isDollarMode = false
     private var people: [Person] = [
         Person(name: "Shabicha", percentage: 100),
@@ -283,6 +303,18 @@ class PeopleListViewController: UIViewController {
 
 // MARK: - Table View Data Source & Delegate
 extension PeopleListViewController: UITableViewDataSource, UITableViewDelegate {
+    func updateTotalAmount(_ amount: Double) {
+        totalAmount = amount
+        
+        // Refresh visible cells with new total
+        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+            if indexPath.row < people.count,
+               let cell = tableView.cellForRow(at: indexPath) as? PersonTableViewCell {
+                let person = people[indexPath.row]
+                cell.configure(with: person, totalAmount: totalAmount)
+            }
+        }
+    }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CGFloat.leastNonzeroMagnitude
     }
@@ -308,7 +340,7 @@ extension PeopleListViewController: UITableViewDataSource, UITableViewDelegate {
             if indexPath.row < people.count {
                 let cell = tableView.dequeueReusableCell(withIdentifier: PersonTableViewCell.identifier, for: indexPath) as! PersonTableViewCell
                 let person = people[indexPath.row]
-                cell.configure(with: person)
+                cell.configure(with: person, totalAmount: totalAmount)
                 if isDollarMode {
                                 cell.switchToDollarMode()
                             } else {
