@@ -51,6 +51,9 @@ class ViewController: UIViewController {
         return tf
     } ()
     
+    private var peopleListVC: PeopleListViewController?
+
+    
     var isPercentSelected = false
     var isDollarSelected = false
 
@@ -68,6 +71,8 @@ class ViewController: UIViewController {
             percent.layer.borderColor = UIColor.black.cgColor
             dollarSelect.layer.borderWidth = 0
         }
+        
+        peopleListVC?.updateSplitMode(isDollar: false)
     }
 
     @objc func toggleButton2() {
@@ -82,6 +87,7 @@ class ViewController: UIViewController {
             dollarSelect.layer.borderColor = UIColor.black.cgColor
             percent.layer.borderWidth = 0
         }
+        peopleListVC?.updateSplitMode(isDollar: true)
     }
 
 
@@ -244,7 +250,7 @@ class ViewController: UIViewController {
     }
     private func embedPeopleList() {
         let peopleVC = PeopleListViewController()
-        
+        peopleListVC = peopleVC
         addChild(peopleVC) // 1️⃣ tell UIKit this is a child
         view.addSubview(peopleVC.view) // 2️⃣ add its view
         peopleVC.didMove(toParent: self) // 3️⃣ finish embedding

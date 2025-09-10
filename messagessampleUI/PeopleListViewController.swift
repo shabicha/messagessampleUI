@@ -22,7 +22,8 @@ class PersonTableViewCell: UITableViewCell {
     private let containerView = UIView()
     private let percentLabel = UILabel()
 
-    
+    private let dollarLabel = UILabel()
+
     var onPercentageChanged: ((Int) -> Void)?
     var onRemovePressed: (() -> Void)?
     var onNameChanged: ((String) -> Void)?
@@ -57,13 +58,13 @@ class PersonTableViewCell: UITableViewCell {
         percentageTextField.keyboardType = .numberPad
         percentageTextField.borderStyle = .roundedRect
         percentageTextField.backgroundColor = UIColor(red: 0.948, green: 0.948, blue: 0.948, alpha: 1)
-        percentageTextField.placeholder = "0"
+        percentageTextField.placeholder = "0" //change for dollar
         percentageTextField.layer.borderColor = UIColor.systemBlue.cgColor
         percentageTextField.layer.borderWidth = 1
         percentageTextField.layer.cornerRadius = 5.86
         percentageTextField.addTarget(self, action: #selector(percentageChanged), for: .editingChanged)
         
-        percentLabel.text = "%   "
+        percentLabel.text = "%   " // change for dollar
         percentLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
             percentLabel.textColor = .systemBlue
             percentLabel.sizeToFit()
@@ -107,7 +108,29 @@ class PersonTableViewCell: UITableViewCell {
         nameTextField.text = person.name
             percentageTextField.text = (person.percentage) == 0 ? "" : "\(person.percentage)"
         }
+    func switchToDollarMode() {
+           percentageTextField.placeholder = "0.00"
+           percentLabel.text = "  $"
+           percentageTextField.keyboardType = .decimalPad
         
+        percentageTextField.leftView = percentLabel
+            percentageTextField.leftViewMode = .always
+            percentageTextField.rightView = nil
+            percentageTextField.rightViewMode = .never
+       }
+       
+       func switchToPercentMode() {
+           percentageTextField.placeholder = "0"
+           percentLabel.text = "%   "
+           percentageTextField.keyboardType = .numberPad
+           
+           percentageTextField.rightView = percentLabel
+               percentageTextField.rightViewMode = .always
+               percentageTextField.leftView = nil
+               percentageTextField.leftViewMode = .never
+           
+       }
+    
         @objc private func percentageChanged() {
             guard let text = percentageTextField.text,
                   let percentage = Int(text),
@@ -176,7 +199,7 @@ class PeopleListViewController: UIViewController {
     let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 10, height: 100), style: .insetGrouped)
     let containerView = UIView()
 
-
+    private var isDollarMode = false
     private var people: [Person] = [
         Person(name: "Shabicha", percentage: 100),
         Person(name: "Shabicha", percentage: 20),
@@ -219,6 +242,21 @@ class PeopleListViewController: UIViewController {
             
             tableView.register(PersonTableViewCell.self, forCellReuseIdentifier: PersonTableViewCell.identifier)
             tableView.register(AddPeopleTableViewCell.self, forCellReuseIdentifier: AddPeopleTableViewCell.identifier)
+        }
+    func updateSplitMode(isDollar: Bool) {
+            isDollarMode = isDollar
+            
+            // Update all visible cells
+            for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+                if indexPath.row < people.count,
+                   let cell = tableView.cellForRow(at: indexPath) as? PersonTableViewCell {
+                    if isDollarMode {
+                        cell.switchToDollarMode()
+                    } else {
+                        cell.switchToPercentMode()
+                    }
+                }
+            }
         }
     
     private func addNewPerson() {
@@ -271,7 +309,11 @@ extension PeopleListViewController: UITableViewDataSource, UITableViewDelegate {
                 let cell = tableView.dequeueReusableCell(withIdentifier: PersonTableViewCell.identifier, for: indexPath) as! PersonTableViewCell
                 let person = people[indexPath.row]
                 cell.configure(with: person)
-                
+                if isDollarMode {
+                                cell.switchToDollarMode()
+                            } else {
+                                cell.switchToPercentMode()
+                            }
                 // Capture cell dynamically instead of using stale indexPath
                 cell.onPercentageChanged = { [weak self, weak tableView, weak cell] percentage in
                     guard let self = self, let cell = cell, let currentIndexPath = tableView?.indexPath(for: cell) else { return }
