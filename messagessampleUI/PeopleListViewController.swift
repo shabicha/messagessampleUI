@@ -153,11 +153,22 @@ class PersonTableViewCell: UITableViewCell {
     
         @objc private func percentageChanged() {
             guard let text = percentageTextField.text,
-                  let percentage = Int(text),
-                  percentage >= 0, percentage <= 100 else {
-                return
-            }
-            onPercentageChanged?(percentage)
+                      !text.isEmpty,
+                      let value = Double(text),
+                      totalAmount > 0 else {
+                    return
+                }
+
+                // if dollar mode, convert to percentage for saving
+                if percentLabel.text?.contains("$") == true {
+                    
+                    let percentage = Int((value / totalAmount) * 100)
+                    onPercentageChanged?(percentage)
+                } else {
+                    // percent mode
+                    guard value >= 0, value <= 100 else { return }
+                    onPercentageChanged?(Int(value))
+                }
         }
         
         @objc private func removePressed() {
