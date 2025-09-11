@@ -64,40 +64,34 @@ class ViewController: UIViewController {
     private var peopleListVC: PeopleListViewController?
 
     
-    var isPercentSelected = false
+    var isPercentSelected = true
     var isDollarSelected = false
 
     @objc func toggleButton() {
       
-        if isPercentSelected {
-            isPercentSelected = false
-            percent.layer.borderWidth = 0
-        } else {
-            
-            isPercentSelected = true
-            isDollarSelected = false
-            
-            percent.layer.borderWidth = 3.0
-            percent.layer.borderColor = UIColor.black.cgColor
-            dollarSelect.layer.borderWidth = 0
-        }
-        
-        peopleListVC?.updateSplitMode(isDollar: false)
+        if !isPercentSelected {
+                    isPercentSelected = true
+                    isDollarSelected = false
+                    
+                    percent.layer.borderWidth = 3.0
+                    percent.layer.borderColor = UIColor.black.cgColor
+                    dollarSelect.layer.borderWidth = 0
+                    
+                    peopleListVC?.updateSplitMode(isDollar: false)
+                }
     }
 
     @objc func toggleButton2() {
-        if isDollarSelected {
-            isDollarSelected = false
-            dollarSelect.layer.borderWidth = 0
-        } else {
-            isDollarSelected = true
-            isPercentSelected = false
-            
-            dollarSelect.layer.borderWidth = 3.0
-            dollarSelect.layer.borderColor = UIColor.black.cgColor
-            percent.layer.borderWidth = 0
-        }
-        peopleListVC?.updateSplitMode(isDollar: true)
+        if !isDollarSelected {
+                  isDollarSelected = true
+                  isPercentSelected = false
+                  
+                  dollarSelect.layer.borderWidth = 3.0
+                  dollarSelect.layer.borderColor = UIColor.black.cgColor
+                  percent.layer.borderWidth = 0
+                  
+                  peopleListVC?.updateSplitMode(isDollar: true)
+              }
     }
 
 
@@ -212,6 +206,7 @@ class ViewController: UIViewController {
         dollarSelect.topAnchor.constraint(equalTo: splitBy.bottomAnchor, constant: 8).isActive = true
         dollarSelect.leadingAnchor.constraint(equalTo: percent.leadingAnchor, constant: 60).isActive = true
         
+        setInitialToggleState()
         
         // send button
        
@@ -259,6 +254,16 @@ class ViewController: UIViewController {
 
 
     }
+    private func setInitialToggleState() {
+           // Set percent as initially selected
+           percent.layer.borderWidth = 3.0
+           percent.layer.borderColor = UIColor.black.cgColor
+           dollarSelect.layer.borderWidth = 0
+           
+           // Update the people list to percent mode
+           peopleListVC?.updateSplitMode(isDollar: false)
+       }
+    
     private func embedPeopleList() {
         let peopleVC = PeopleListViewController()
         peopleListVC = peopleVC
