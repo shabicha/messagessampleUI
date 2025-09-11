@@ -34,7 +34,7 @@ class ViewController: UIViewController {
     private var numField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "0.00"
-        tf.keyboardType = .numberPad
+        tf.keyboardType = .decimalPad
         
         tf.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
         tf.layer.cornerRadius = 5.5
@@ -251,8 +251,14 @@ class ViewController: UIViewController {
 
         //PeopleListViewController
         embedPeopleList()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+            tapGesture.cancelsTouchesInView = false
+            view.addGestureRecognizer(tapGesture)
 
-
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
     private func setInitialToggleState() {
            // Set percent as initially selected

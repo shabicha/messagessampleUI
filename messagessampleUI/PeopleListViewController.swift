@@ -56,7 +56,7 @@ class PersonTableViewCell: UITableViewCell {
         percentageTextField.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         percentageTextField.textColor = .systemBlue
         percentageTextField.textAlignment = .center
-        percentageTextField.keyboardType = .numberPad
+        percentageTextField.keyboardType = .decimalPad
         percentageTextField.borderStyle = .roundedRect
         percentageTextField.backgroundColor = UIColor(red: 0.948, green: 0.948, blue: 0.948, alpha: 1)
         percentageTextField.placeholder = "0" //change for dollar
@@ -134,7 +134,7 @@ class PersonTableViewCell: UITableViewCell {
        func switchToPercentMode() {
            percentageTextField.placeholder = "0"
            percentLabel.text = "%   "
-           percentageTextField.keyboardType = .numberPad
+           percentageTextField.keyboardType = .decimalPad
            
            percentageTextField.rightView = percentLabel
                percentageTextField.rightViewMode = .always
@@ -255,8 +255,11 @@ class PeopleListViewController: UIViewController {
             ])
         }
     private func setupTableView() {
+        
             tableView.delegate = self
             tableView.dataSource = self
+        tableView.bounces = false
+           tableView.alwaysBounceVertical = false
         
             tableView.overrideUserInterfaceStyle = .light
             tableView.backgroundColor = .systemGroupedBackground
@@ -267,6 +270,7 @@ class PeopleListViewController: UIViewController {
             tableView.register(PersonTableViewCell.self, forCellReuseIdentifier: PersonTableViewCell.identifier)
             tableView.register(AddPeopleTableViewCell.self, forCellReuseIdentifier: AddPeopleTableViewCell.identifier)
         }
+    
     func updateSplitMode(isDollar: Bool) {
             isDollarMode = isDollar
             
