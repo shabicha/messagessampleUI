@@ -50,7 +50,7 @@ class PersonTableViewCell: UITableViewCell {
         nameTextField.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         nameTextField.keyboardType = .default
         nameTextField.addTarget(self, action: #selector(nameChanged), for: .editingChanged)
-
+        nameTextField.placeholder = "Enter Name"
         
         // Percentage text field
         percentageTextField.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -280,7 +280,7 @@ class PeopleListViewController: UIViewController {
         }
     
     private func addNewPerson() {
-            let newPerson = Person(name: "Enter Name", percentage: 0)
+            let newPerson = Person(name: "", percentage: 0)
             people.append(newPerson)
             
             let indexPath = IndexPath(row: people.count - 1, section: 0)
