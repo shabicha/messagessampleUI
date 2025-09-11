@@ -186,6 +186,8 @@ class AddPeopleTableViewCell: UITableViewCell {
     
     private func setupUI() {
         selectionStyle = .none
+        overrideUserInterfaceStyle = .light
+        
         addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
         addButton.tintColor = .systemBlue
             addButton.contentHorizontalAlignment = .left
@@ -228,11 +230,12 @@ class PeopleListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor(red: 0.949, green: 0.949, blue: 0.969, alpha: 1)
         setupUI()
         setupTableView()
     }
     private func setupUI() {
-        
+            overrideUserInterfaceStyle = .light
             view.backgroundColor = .systemGroupedBackground
         
             navigationController?.navigationBar.prefersLargeTitles = false
@@ -254,7 +257,8 @@ class PeopleListViewController: UIViewController {
     private func setupTableView() {
             tableView.delegate = self
             tableView.dataSource = self
-            
+        
+            tableView.overrideUserInterfaceStyle = .light
             tableView.backgroundColor = .systemGroupedBackground
             tableView.separatorStyle = .singleLine
             tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)

@@ -267,9 +267,9 @@ class ViewController: UIViewController {
     private func embedPeopleList() {
         let peopleVC = PeopleListViewController()
         peopleListVC = peopleVC
-        addChild(peopleVC) // 1️⃣ tell UIKit this is a child
-        view.addSubview(peopleVC.view) // 2️⃣ add its view
-        peopleVC.didMove(toParent: self) // 3️⃣ finish embedding
+        addChild(peopleVC)
+        view.addSubview(peopleVC.view)
+        peopleVC.didMove(toParent: self)
         
         peopleVC.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
