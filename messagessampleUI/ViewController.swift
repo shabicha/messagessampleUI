@@ -28,6 +28,7 @@ class ViewController: UIViewController {
     private var people = UILabel()
 
     private var percent = UIButton()
+    private var equal = UIButton()
     private var dollarSelect = UIButton()
     private var send = UIButton()
 
@@ -186,7 +187,7 @@ class ViewController: UIViewController {
 
         percent.heightAnchor.constraint(equalToConstant: 35).isActive = true
         percent.topAnchor.constraint(equalTo: splitBy.bottomAnchor, constant: 8).isActive = true
-        percent.leadingAnchor.constraint(equalTo: numField.leadingAnchor, constant: 225).isActive = true
+        percent.leadingAnchor.constraint(equalTo: numField.leadingAnchor, constant: 190).isActive = true
         
         //dollar
         dollarSelect.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
@@ -206,6 +207,23 @@ class ViewController: UIViewController {
         dollarSelect.topAnchor.constraint(equalTo: splitBy.bottomAnchor, constant: 8).isActive = true
         dollarSelect.leadingAnchor.constraint(equalTo: percent.leadingAnchor, constant: 60).isActive = true
         
+        //equal
+        equal.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+        equal.layer.cornerRadius = 5
+        equal.setTitle("=", for: .normal)
+        equal.setTitleColor(UIColor(red: 0.557, green: 0.557, blue: 0.576, alpha: 1), for: .normal)
+        equal.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+
+            // pressed state
+        equal.addTarget(self, action: #selector(toggleButton2), for: .touchUpInside)
+
+        view.addSubview(equal)
+        equal.translatesAutoresizingMaskIntoConstraints = false
+        equal.widthAnchor.constraint(equalToConstant: 44.95).isActive = true
+
+        equal.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        equal.topAnchor.constraint(equalTo: splitBy.bottomAnchor, constant: 8).isActive = true
+        equal.leadingAnchor.constraint(equalTo: dollarSelect.leadingAnchor, constant: 60).isActive = true
         setInitialToggleState()
         
         // send button
