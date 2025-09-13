@@ -67,17 +67,19 @@ class ViewController: UIViewController {
     
     var isPercentSelected = true
     var isDollarSelected = false
-
+    var isEqualSelected = false
     @objc func toggleButton() {
       
         if !isPercentSelected {
                     isPercentSelected = true
                     isDollarSelected = false
-                    
+            isEqualSelected = false
+            
                     percent.layer.borderWidth = 3.0
                     percent.layer.borderColor = UIColor.black.cgColor
                     dollarSelect.layer.borderWidth = 0
-                    
+            equal.layer.borderWidth = 0
+            
                     peopleListVC?.updateSplitMode(isDollar: false)
                 }
     }
@@ -86,14 +88,30 @@ class ViewController: UIViewController {
         if !isDollarSelected {
                   isDollarSelected = true
                   isPercentSelected = false
-                  
+            isEqualSelected = false
                   dollarSelect.layer.borderWidth = 3.0
                   dollarSelect.layer.borderColor = UIColor.black.cgColor
                   percent.layer.borderWidth = 0
+            equal.layer.borderWidth = 0
+            
+                  peopleListVC?.updateSplitMode(isDollar: true)
+              }
+    }
+    
+    @objc func toggleButton3() {
+        if !isEqualSelected {
+                  isDollarSelected = false
+                  isPercentSelected = false
+                    isEqualSelected = true
+            equal.layer.borderWidth = 3.0
+            equal.layer.borderColor = UIColor.black.cgColor
+                  percent.layer.borderWidth = 0
+            dollarSelect.layer.borderWidth = 0
                   
                   peopleListVC?.updateSplitMode(isDollar: true)
               }
     }
+
 
 
     override func viewDidLoad() {
@@ -215,7 +233,7 @@ class ViewController: UIViewController {
         equal.titleLabel?.font = UIFont.systemFont(ofSize: 16)
 
             // pressed state
-        equal.addTarget(self, action: #selector(toggleButton2), for: .touchUpInside)
+        equal.addTarget(self, action: #selector(toggleButton3), for: .touchUpInside)
 
         view.addSubview(equal)
         equal.translatesAutoresizingMaskIntoConstraints = false
