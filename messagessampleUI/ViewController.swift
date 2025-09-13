@@ -57,7 +57,7 @@ class ViewController: UIViewController {
           tf.leftView = leftContainer
           tf.leftViewMode = .always
            
-           tf.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 55, height: 20))
+           tf.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
            tf.rightViewMode = .always
         return tf
     } ()
@@ -151,7 +151,7 @@ class ViewController: UIViewController {
         view.addSubview(amount)
         amount.translatesAutoresizingMaskIntoConstraints = false
         amount.topAnchor.constraint(equalTo: billTitle.bottomAnchor, constant: 30).isActive = true
-        amount.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
+        amount.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 47).isActive = true
         
         //splitby
         splitBy.text = "SPLIT BY"
@@ -162,7 +162,7 @@ class ViewController: UIViewController {
         view.addSubview(splitBy)
         splitBy.translatesAutoresizingMaskIntoConstraints = false
         splitBy.topAnchor.constraint(equalTo: billTitle.bottomAnchor, constant: 30).isActive = true
-        splitBy.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 255).isActive = true
+        splitBy.leadingAnchor.constraint(equalTo: amount.leadingAnchor, constant: 170).isActive = true
         //text field
         view.addSubview(numField)
         numField.translatesAutoresizingMaskIntoConstraints = false
@@ -187,7 +187,7 @@ class ViewController: UIViewController {
 
         percent.heightAnchor.constraint(equalToConstant: 35).isActive = true
         percent.topAnchor.constraint(equalTo: splitBy.bottomAnchor, constant: 8).isActive = true
-        percent.leadingAnchor.constraint(equalTo: numField.leadingAnchor, constant: 190).isActive = true
+        percent.leadingAnchor.constraint(equalTo: numField.leadingAnchor, constant: 170).isActive = true
         
         //dollar
         dollarSelect.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
@@ -265,7 +265,7 @@ class ViewController: UIViewController {
         view.addSubview(people)
         people.translatesAutoresizingMaskIntoConstraints = false
         people.topAnchor.constraint(equalTo: numField.bottomAnchor, constant: 32).isActive = true
-        people.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
+        people.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 47).isActive = true
 
         //PeopleListViewController
         embedPeopleList()
