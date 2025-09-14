@@ -151,6 +151,24 @@ class PersonTableViewCell: UITableViewCell {
            
        }
     
+    func switchToEqualMode(numberOfPeople: Int) {
+        percentageTextField.placeholder = "0.00"
+        percentLabel.text = "  $"
+        percentageTextField.keyboardType = .decimalPad
+     
+     percentageTextField.leftView = percentLabel
+         percentageTextField.leftViewMode = .always
+         percentageTextField.rightView = nil
+         percentageTextField.rightViewMode = .never
+     
+    if totalAmount > 0 {
+         let count = max(numberOfPeople, 1) // prevent divide by zero
+         let dollarAmount = totalAmount / Double(count)
+         percentageTextField.text = String(format: "%.2f", dollarAmount)
+     }
+        
+    }
+    
         @objc private func percentageChanged() {
             guard let text = percentageTextField.text,
                   let percentage = Int(text),
@@ -222,6 +240,9 @@ class PeopleListViewController: UIViewController {
     let containerView = UIView()
     private var totalAmount: Double = 0.0   
     private var isDollarMode = false
+    private var isPercentMode = true
+    private var isEqualMode = false
+    
     private var people: [Person] = [
         Person(name: "Shabicha", percentage: 100),
         Person(name: "Shabicha", percentage: 20),
@@ -271,18 +292,24 @@ class PeopleListViewController: UIViewController {
             tableView.register(AddPeopleTableViewCell.self, forCellReuseIdentifier: AddPeopleTableViewCell.identifier)
         }
     
-    func updateSplitMode(isDollar: Bool) {
+    func updateSplitMode(isDollar: Bool, isPercent:Bool, isEqual:Bool) {
             isDollarMode = isDollar
-            
+            isPercentMode = isPercent
+            isEqualMode = isEqual
+        
             // Update all visible cells
             for indexPath in tableView.indexPathsForVisibleRows ?? [] {
                 if indexPath.row < people.count,
                    let cell = tableView.cellForRow(at: indexPath) as? PersonTableViewCell {
+                    
                     if isDollarMode {
                         cell.switchToDollarMode()
-                    } else {
+                    } else if isPercentMode {
                         cell.switchToPercentMode()
+                    } else if isEqualMode {
+                        cell.switchToEqualMode(numberOfPeople: people.count)
                     }
+                    
                 }
             }
         }
@@ -349,11 +376,14 @@ extension PeopleListViewController: UITableViewDataSource, UITableViewDelegate {
                 let cell = tableView.dequeueReusableCell(withIdentifier: PersonTableViewCell.identifier, for: indexPath) as! PersonTableViewCell
                 let person = people[indexPath.row]
                 cell.configure(with: person, totalAmount: totalAmount)
+                
                 if isDollarMode {
-                                cell.switchToDollarMode()
-                            } else {
-                                cell.switchToPercentMode()
-                            }
+                    cell.switchToDollarMode()
+                } else if isPercentMode {
+                    cell.switchToPercentMode()
+                } else if isEqualMode {
+                    cell.switchToEqualMode(numberOfPeople: people.count)
+                }
                 // Capture cell dynamically instead of using stale indexPath
                 cell.onPercentageChanged = { [weak self, weak tableView, weak cell] percentage in
                     guard let self = self, let cell = cell, let currentIndexPath = tableView?.indexPath(for: cell) else { return }

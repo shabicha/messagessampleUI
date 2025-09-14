@@ -80,7 +80,7 @@ class ViewController: UIViewController {
                     dollarSelect.layer.borderWidth = 0
             equal.layer.borderWidth = 0
             
-                    peopleListVC?.updateSplitMode(isDollar: false)
+                    peopleListVC?.updateSplitMode(isDollar: false, isPercent:true, isEqual:false)
                 }
     }
 
@@ -94,7 +94,7 @@ class ViewController: UIViewController {
                   percent.layer.borderWidth = 0
             equal.layer.borderWidth = 0
             
-                  peopleListVC?.updateSplitMode(isDollar: true)
+                  peopleListVC?.updateSplitMode(isDollar: true,  isPercent:false, isEqual:false)
               }
     }
     
@@ -108,7 +108,7 @@ class ViewController: UIViewController {
                   percent.layer.borderWidth = 0
             dollarSelect.layer.borderWidth = 0
                   
-                  peopleListVC?.updateSplitMode(isDollar: true)
+                  peopleListVC?.updateSplitMode(isDollar: false,  isPercent:false, isEqual:true)
               }
     }
 
@@ -303,7 +303,7 @@ class ViewController: UIViewController {
            dollarSelect.layer.borderWidth = 0
            
            // Update the people list to percent mode
-           peopleListVC?.updateSplitMode(isDollar: false)
+           peopleListVC?.updateSplitMode(isDollar: false, isPercent:true, isEqual:true)
        }
     
     private func embedPeopleList() {
