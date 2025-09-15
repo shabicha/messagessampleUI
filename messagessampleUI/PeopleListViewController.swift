@@ -123,7 +123,7 @@ class PersonTableViewCell: UITableViewCell {
             percentageTextField.rightViewMode = .never
         
         if let currentText = percentageTextField.text,
-              let percentage = Int(currentText),
+              let percentage = Double(currentText),
               percentage > 0,
               totalAmount > 0 {
                let dollarAmount = (Double(percentage) / 100.0) * totalAmount
@@ -145,8 +145,8 @@ class PersonTableViewCell: UITableViewCell {
                   let dollarAmount = Double(currentText),
                   dollarAmount > 0,
                   totalAmount > 0 {
-                   let percentage = Int((dollarAmount / totalAmount) * 100)
-                   percentageTextField.text = "\(percentage)"
+                   let percentage = Double((dollarAmount / totalAmount) * 100)
+                   percentageTextField.text = String(format: "%.2f", percentage)
                }
            
        }
