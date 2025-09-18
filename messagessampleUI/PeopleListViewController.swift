@@ -22,7 +22,7 @@ class PersonTableViewCell: UITableViewCell {
     private let containerView = UIView()
     private let percentLabel = UILabel()
     private var totalAmount: Double = 0.0
-
+    private var dollarMode:Bool = false
     private let dollarLabel = UILabel()
 
     var onPercentageChanged: ((Int) -> Void)?
@@ -125,10 +125,20 @@ class PersonTableViewCell: UITableViewCell {
         if let currentText = percentageTextField.text,
               let percentage = Double(currentText),
               percentage > 0,
-              totalAmount > 0 {
+              totalAmount > 0,
+           dollarMode == false {
+            
                let dollarAmount = (Double(percentage) / 100.0) * totalAmount
                percentageTextField.text = String(format: "%.2f", dollarAmount)
-           }
+            
+        } else if let currentText = percentageTextField.text,
+                  let percentage = Double(currentText),
+                  percentage > 0,
+                  totalAmount > 0,
+               dollarMode == true {
+            percentageTextField.text = String(format: "%.2f", percentage)
+            
+        }
        }
        
        func switchToPercentMode() {
@@ -145,6 +155,7 @@ class PersonTableViewCell: UITableViewCell {
                   let dollarAmount = Double(currentText),
                   dollarAmount > 0,
                   totalAmount > 0 {
+                  dollarMode = false
                    let percentage = Double((dollarAmount / totalAmount) * 100)
                    percentageTextField.text = String(format: "%.2f", percentage)
                }
@@ -164,6 +175,7 @@ class PersonTableViewCell: UITableViewCell {
     if totalAmount > 0 {
          let count = max(numberOfPeople, 1) // prevent divide by zero
          let dollarAmount = totalAmount / Double(count)
+         dollarMode = true
          percentageTextField.text = String(format: "%.2f", dollarAmount)
      }
         
@@ -393,7 +405,7 @@ extension PeopleListViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.onRemovePressed = { [weak self, weak tableView, weak cell] in
                     guard let self = self, let cell = cell, let currentIndexPath = tableView?.indexPath(for: cell) else { return }
                     
-                    // Prevent removing the last person
+                    // Prevent removing last person
                     guard self.people.count > 1 else { return }
                     
                     self.removePerson(at: currentIndexPath.row)
