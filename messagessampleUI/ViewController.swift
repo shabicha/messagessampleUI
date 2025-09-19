@@ -344,7 +344,4 @@ class ViewController: UIViewController {
 
 }
 
-#Preview {
-ViewController()
-}
 
