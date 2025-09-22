@@ -27,3 +27,8 @@ class BillViewController: UIViewController {
     */
 
 }
+
+#Preview {
+    BillViewController()
+}
+

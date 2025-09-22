@@ -429,6 +429,6 @@ extension PeopleListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
 #Preview {
-PeopleListViewController()
+    PeopleListViewController()
 }
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class ViewController: UIViewController {
     @objc func amountChanged() {
@@ -345,3 +346,6 @@ class ViewController: UIViewController {
 }
 
 
+#Preview {
+    ViewController().asPreview()
+}
